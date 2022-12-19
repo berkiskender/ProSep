@@ -180,15 +180,13 @@ def plot_FBP_results(f, f_true_recon, f_pol_est_static_FBP, f_pol_est_FBP, P, nu
     plt.figure(figsize=(3 * num_instances / rate, 3 * 2))
     for instant in range(num_instances // rate):
         plt.subplot(1, num_instances // rate, instant + 1)
-        plt.title('f %d' % instant)
-        plt.imshow(f[:, :, instant * P * rate // num_instances], cmap='gray')
-        plt.clim(0, np.max(f))
+        plt.title(r'$f$ %d' % instant)
+        plt.imshow(f[:, :, instant * P * rate // num_instances], cmap='gray', clim=(0, np.max(f)))
     plt.show()
 
-    plt.figure(figsize=(6, 6))
-    plt.title('F_{pol} estimation static FBP %s' % exp_name)
-    plt.imshow(f_pol_est_static_FBP, cmap='gray')
-    plt.clim(0, np.max(f))
+    plt.figure(figsize=(3, 3))
+    plt.title(r'Direct FBP')
+    plt.imshow(f_pol_est_static_FBP, cmap='gray', clim=(0, np.max(f)))
     plt.show()
 
     plt.figure(figsize=(5 * num_instances / rate, 5 * 4))
@@ -196,33 +194,28 @@ def plot_FBP_results(f, f_true_recon, f_pol_est_static_FBP, f_pol_est_FBP, P, nu
     for instant in range(num_instances // rate):
         max_val_cbar = f.max() if val_cbar == 'max' else f[:, :, instant * P * rate // num_instances].max()
         plt.subplot(5, num_instances // rate, instant + 1)
-        plt.title('f %d' % instant)
-        plt.imshow(f[:, :, instant * P * rate // num_instances], cmap='gray')
-        plt.clim(0, max_val_cbar)
+        plt.title(r'$f$ %d' % instant)
+        plt.imshow(f[:, :, instant * P * rate // num_instances], cmap='gray', clim=(0, max_val_cbar))
         plt.colorbar()
         plt.subplot(5, num_instances // rate, instant + 1 + num_instances // rate)
-        plt.title('f_est %d' % (instant))
-        plt.imshow(f_pol_est_FBP[:, :, instant * P * rate // num_instances], cmap='gray')
-        plt.clim(0, max_val_cbar)
+        plt.title(r'$f_{est}$ %d' % (instant))
+        plt.imshow(f_pol_est_FBP[:, :, instant * P * rate // num_instances], cmap='gray', clim=(0, max_val_cbar))
         plt.colorbar()
         plt.subplot(5, num_instances // rate, instant + 1 + 2 * num_instances // rate)
-        plt.title('f_true_recon %d' % (instant))
-        plt.imshow(f_true_recon[:, :, instant * P * rate // num_instances], cmap='gray')
-        plt.clim(0, max_val_cbar)
+        plt.title(r'$f_{true_rec}$ %d' % (instant))
+        plt.imshow(f_true_recon[:, :, instant * P * rate // num_instances], cmap='gray', clim=(0, max_val_cbar))
         plt.colorbar()
         plt.subplot(5, num_instances // rate, instant + 1 + 3 * num_instances // rate)
-        plt.title('|f_true_recon - f_est| %d' % (instant))
+        plt.title('$|f_{true_rec} - f_{est}|$ %d' % (instant))
         plt.imshow(np.abs(f_pol_est_FBP[:, :, instant * P * rate // num_instances] - f_true_recon[:, :,
                                                                                      instant * P * rate // num_instances]),
-                   cmap='gray')
-        plt.clim(0, max_val_cbar)
+                   cmap='gray', clim=(0, max_val_cbar))
         plt.colorbar()
         plt.subplot(5, num_instances // rate, instant + 1 + 4 * num_instances // rate)
-        plt.title('|f_true_recon - f_est| %d' % (instant))
+        plt.title('$|f_{true_rec} - f_{est}|$ %d' % (instant))
         plt.imshow(np.abs(f_pol_est_FBP[:, :, instant * P * rate // num_instances] - f_true_recon[:, :,
                                                                                      instant * P * rate // num_instances]),
-                   cmap='gray')
-        plt.clim(0, max_val_cbar / 4)
+                   cmap='gray', clim=(0, max_val_cbar / 4))
         plt.colorbar()
         plt.tight_layout()
     plt.show()
@@ -231,5 +224,4 @@ def plot_FBP_results(f, f_true_recon, f_pol_est_static_FBP, f_pol_est_FBP, P, nu
 
 
 def compute_psnr(x_gt, x_rec):
-    mse = np.mean((x_rec - x_gt) ** 2)
-    return 20 * np.log10((np.max(x_gt) - np.min(x_gt)) / np.sqrt(mse))
+    return 20 * np.log10((np.max(x_gt) - np.min(x_gt)) / np.sqrt(np.mean((x_rec - x_gt) ** 2)))

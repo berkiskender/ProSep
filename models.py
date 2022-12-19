@@ -21,10 +21,6 @@ class SeriesExpansion(nn.Module):
         self.theta = torch.Tensor(theta).cuda()
         self.pi_symm = pi_symm
         self.Theta_type = Theta_type
-        self.filter_len = 17
-        self.conv_filter = torch.autograd.Variable(
-            torch.Tensor([1.0 / self.filter_len for i in range(self.filter_len)]).view(1, 1, self.filter_len).cuda(),
-            requires_grad=False)
 
         if learning_mode in ['only_temp_rep_learn_linear', 'only_temp_rep_learn_poly', 'only_temp_rep_learn_sine',
                              'only_temp_rep_cubic_spline', 'only_temp_rep_learn_casorati']:
@@ -76,7 +72,7 @@ class SeriesExpansion(nn.Module):
                 if self.pi_symm:
                     L1[self.P:, n * (self.K + 1) + k] = self.Theta_mtx_symm[0, :, n] * psi_mtx[0, k, :]
 
-        eta = (torch.pinverse(L1) @ torch.transpose(g_t, 2, 3))
+        eta = (torch.linalg.pinv(L1) @ torch.transpose(g_t, 2, 3))
         g_est = L1 @ eta
 
         with torch.no_grad():
