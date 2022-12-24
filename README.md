@@ -1,9 +1,8 @@
 # ProSep
 Paper
 ======
-[IEEE IVMSP2022 (short conference version)](https://ieeexplore.ieee.org/document/9816298), [arXiv](https://arxiv.org/abs/2204.09935)
-
 In case of use, please cite our publication:
+[IEEE IVMSP2022 (short conference version)](https://ieeexplore.ieee.org/document/9816298), [arXiv](https://arxiv.org/abs/2204.09935)
 
 Bibtex:
 ```
